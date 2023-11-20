@@ -1,13 +1,13 @@
-from typing import List
 import random
+from typing import List
+
 from fastapi import APIRouter, FastAPI, Request, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
+
 from service.api.authorization import APIKeys
-from service.api.exceptions import UserNotFoundError, ModelNotFoundError, \
-    AuthorizationError
-from service.api.recommenders import top_popular, \
-    weighted_random_recommendation, top_popular_without_viewed
+from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
+from service.api.recommenders import top_popular, top_popular_without_viewed, weighted_random_recommendation
 from service.log import app_logger
 
 
@@ -17,7 +17,7 @@ class RecoResponse(BaseModel):
 
 
 router = APIRouter()
-api_key_header = APIKeyHeader(name='Authorization')
+api_key_header = APIKeyHeader(name="Authorization")
 
 
 def token_response(token: str = Security(api_key_header)) -> str:
@@ -43,16 +43,9 @@ async def health() -> str:
     return "I am alive"
 
 
-@router.get(
-    path="/reco/{model_name}/{user_id}",
-    tags=["Recommendations"],
-    response_model=RecoResponse
-)
+@router.get(path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse)
 async def get_reco(
-    request: Request,
-    model_name: str,
-    user_id: int,
-    token: str = Security(token_response)
+    request: Request, model_name: str, user_id: int, token: str = Security(token_response)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
 

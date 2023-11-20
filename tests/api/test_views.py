@@ -1,7 +1,9 @@
 from http import HTTPStatus
+
 from starlette.testclient import TestClient
-from service.settings import ServiceConfig
+
 from service.api.authorization import APIKeys
+from service.settings import ServiceConfig
 
 GET_RECO_PATH = "/reco/{model_name}/{user_id}"
 models = ["random", "top_20_popular", "top_popular_without_viewed"]
