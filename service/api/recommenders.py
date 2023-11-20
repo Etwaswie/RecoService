@@ -27,9 +27,9 @@ def top_popular_without_viewed(user_id, k):
     else:
         viewed_films_user = []
 
-    for i, j in enumerate(viewed_films_user):
-        if viewed_films_user[i] in top:
-            top.remove(viewed_films_user[i])
+    for i in enumerate(viewed_films_user):
+        if viewed_films_user[i[0]] in top:
+            top.remove(viewed_films_user[i[0]])
 
     reco = top_items_list[:k]
     return reco
