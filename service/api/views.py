@@ -48,18 +48,18 @@ async def get_reco(
     request: Request, model_name: str, user_id: int, token: str = Security(token_response)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
-
+    k_recs = 10
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
     if model_name == "random":
-        reco = random.sample(range(16518), 10)
+        reco = random.sample(range(16518), k_recs)
     elif model_name == "top_20_popular":
-        reco = top_popular(10)
+        reco = top_popular(k_recs)
     elif model_name == "top_weighted_duration_random":
-        reco = weighted_random_recommendation(10)
+        reco = weighted_random_recommendation(k_recs)
     elif model_name == "top_popular_without_viewed":
-        reco = top_popular_without_viewed(user_id, 10)
+        reco = top_popular_without_viewed(user_id, k_recs)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
