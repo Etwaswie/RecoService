@@ -55,11 +55,11 @@ async def get_reco(
     if model_name == "random":
         reco = random.sample(range(16518), 10)
     elif model_name == "top_20_popular":
-        reco = top_popular()
+        reco = top_popular(10)
     elif model_name == "top_weighted_duration_random":
         reco = weighted_random_recommendation(10)
     elif model_name == "top_popular_without_viewed":
-        reco = top_popular_without_viewed(user_id)
+        reco = top_popular_without_viewed(user_id, 10)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 

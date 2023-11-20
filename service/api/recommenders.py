@@ -10,7 +10,7 @@ viewed_films = pd.read_csv("data/viewed_films.csv")
 top_items_list = top_items.sort_values("views", ascending=False)["item_id"].to_list()
 
 
-def top_popular(k=10):
+def top_popular(k):
     reco = top_20["item_id"].head(k).to_list()
     return reco
 
@@ -20,7 +20,7 @@ def weighted_random_recommendation(n, items_weights=top_weight_duration):
     return reco
 
 
-def top_popular_without_viewed(user_id, k=10):
+def top_popular_without_viewed(user_id, k):
     top = top_items_list
     if len(viewed_films[viewed_films["user_id"] == user_id]["items_list_id"].to_list()) > 0:
         viewed_films_user = viewed_films[viewed_films["user_id"] == user_id]["items_list_id"].to_list()[0]
