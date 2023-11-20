@@ -64,6 +64,6 @@ def failed_authorization(
     model_name = "top"
     path = GET_RECO_PATH.format(model_name=model_name, user_id=user_id)
     with client:
-        response = client.get(path, headers={"Authorization": 'FailAPI'})
+        response = client.get(path, headers={"Authorization": "FailAPI"})
     assert response.status_code == HTTPStatus.UNAUTHORIZED
     assert response.json()["errors"][0]["error_key"] == "user_not_authorized"
