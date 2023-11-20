@@ -4,7 +4,7 @@ from service.settings import ServiceConfig
 from service.api.authorization import APIKeys
 
 GET_RECO_PATH = "/reco/{model_name}/{user_id}"
-models = ["random", "top_popular", "weighted_random_recommendation"]
+models = ["random", "top_20_popular", "top_popular_without_viewed"]
 
 
 def test_health(
@@ -27,7 +27,7 @@ def test_get_reco_success(
         assert response.status_code == HTTPStatus.OK
         response_json = response.json()
         assert response_json["user_id"] == user_id
-        assert len(response_json["items"]) == service_config.k_recs
+        assert len(response_json["items"]) == 10
         assert all(isinstance(item_id, int) for item_id in response_json["items"])
 
 
