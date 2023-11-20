@@ -24,8 +24,7 @@ api_key_header = APIKeyHeader(name="Authorization")
 def token_response(token: str = Security(api_key_header)) -> str:
     if token == APIKeys:
         return token
-    else:
-        raise AuthorizationError()
+    raise AuthorizationError()
 
 
 @router.get(
