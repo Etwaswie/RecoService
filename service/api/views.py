@@ -12,6 +12,7 @@ from service.api.authorization import APIKeys
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.api.recommenders import top_popular, top_popular_without_viewed, weighted_random_recommendation
 from service.log import app_logger
+
 # from service.reco_models.my_loader import my_load
 
 # MODEL_PATH = "service/reco_models/user_knn.pkl"
