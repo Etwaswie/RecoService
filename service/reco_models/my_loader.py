@@ -15,6 +15,6 @@ class Unpickler(pickle.Unpickler):
         return super().find_class(module, name)
 
 
-def load(path: str):
+def my_load(path: str):
     with open(os.path.join(path), "rb") as f:
         return Unpickler(f).load()
