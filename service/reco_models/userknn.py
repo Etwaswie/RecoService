@@ -10,9 +10,6 @@ from implicit.nearest_neighbours import ItemItemRecommender
 
 
 class UserKnn:
-    """Class for fit-predict UserKNN model
-    based on ItemKNN model from implicit.nearest_neighbours
-    """
 
     def __init__(self, model: ItemItemRecommender, N_users: int = 50):
         self.model = model
