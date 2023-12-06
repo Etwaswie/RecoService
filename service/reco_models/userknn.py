@@ -21,9 +21,6 @@ class UserKnn:
         self.N_users = N_users
         self.is_fitted = False
 
-        with lzma.open("./service/recmodels_folder/user_knn.xz", "rb") as file:
-            self.user_knn = pickle.load(file)
-
     def get_mappings(self, train):
         self.users_inv_mapping = dict(enumerate(train["user_id"].unique()))
         self.users_mapping = {v: k for k, v in self.users_inv_mapping.items()}
