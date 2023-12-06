@@ -1,8 +1,7 @@
 import os
 import pickle
+
 import service.reco_models.userknn
-
-
 
 
 class Unpickler(pickle.Unpickler):
