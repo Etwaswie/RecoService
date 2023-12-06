@@ -10,7 +10,7 @@ from implicit.nearest_neighbours import ItemItemRecommender
 
 
 class UserKnn:
-    def __init__(self, model: ItemItemRecommender, N_users: int = 50):
+    def __init__(self, model, N_users: int = 50):
         self.model = model
         self.N_users = N_users
         self.is_fitted = False
@@ -152,4 +152,4 @@ class UserKnn:
         return self.predict(df, N_recs=N_recs).item_id.to_list()
 
 
-# user_knn = UserKnn()
+user_knn = UserKnn(ItemItemRecommender, 50)

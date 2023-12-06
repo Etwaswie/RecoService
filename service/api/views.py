@@ -10,7 +10,7 @@ from service.api.authorization import APIKeys
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.api.recommenders import top_popular, top_popular_without_viewed, weighted_random_recommendation
 from service.log import app_logger
-from service.reco_models.userknn import UserKnn
+from service.reco_models.userknn import user_knn
 
 # from service.reco_models.my_loader import my_load
 
@@ -69,8 +69,7 @@ async def get_reco(
     if model_name == "random":
         reco = random.sample(range(16518), k_recs)
     elif model_name == "userKNN":
-        user_knn = UserKnn
-        reco = user_knn.recommend(user_id)
+        reco = user_knn.predict(user_id)
     elif model_name == "top_20_popular":
         reco = top_popular(k_recs)
     elif model_name == "top_weighted_duration_random":
