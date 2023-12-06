@@ -1,13 +1,15 @@
 import os
 import pickle
+import service.reco_models.userknn
 
-from service.reco_models.userknn import UserKnn
+
 
 
 class Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         if name == "UserKnn":
-            return UserKnn
+            user_KNN = service.reco_models.userknn.UserKnn
+            return user_KNN
 
         return super().find_class(module, name)
 
