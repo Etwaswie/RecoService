@@ -1,7 +1,5 @@
 # type: ignore
 
-import lzma
-import pickle
 from collections import Counter
 from typing import Dict
 
