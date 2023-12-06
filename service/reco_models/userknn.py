@@ -10,7 +10,6 @@ from implicit.nearest_neighbours import ItemItemRecommender
 
 
 class UserKnn:
-
     def __init__(self, model: ItemItemRecommender, N_users: int = 50):
         self.model = model
         self.N_users = N_users
