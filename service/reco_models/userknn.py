@@ -122,7 +122,7 @@ class UserKnn:
         # recs = pd.concat([cold_recs, active_recs])
 
         # Рекомендации для всех юзеров
-        all_users = test[test["user_id"].isin(self.users_mapping)]  # без этого условия redict падает с KeyError
+        all_users = test[test["user_id"].isin(self.users_mapping)]  # без этого условия predict падает с KeyError
 
         recs = pd.DataFrame({"user_id": all_users["user_id"].unique()})
         if len(recs) > 0:
