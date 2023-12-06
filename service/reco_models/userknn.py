@@ -64,7 +64,7 @@ class UserKnn:
 
     def fit(self, train: pd.DataFrame):
         self.user_knn = self.model
-        self.get_mappings(train)
+        # self.get_mappings(train)
         self.weights_matrix = self.get_matrix(train, users_mapping=self.users_mapping, items_mapping=self.items_mapping)
 
         self.n = train.shape[0]
