@@ -69,7 +69,7 @@ async def get_reco(
     if model_name == "random":
         reco = random.sample(range(16518), k_recs)
     elif model_name == "userKNN":
-        user_knn = UserKnn()
+        user_knn = UserKnn
         reco = user_knn.recommend(user_id)
     elif model_name == "top_20_popular":
         reco = top_popular(k_recs)
