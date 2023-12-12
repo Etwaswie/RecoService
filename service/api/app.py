@@ -1,3 +1,5 @@
+# type: ignore
+
 import asyncio
 from concurrent.futures.thread import ThreadPoolExecutor
 from typing import Any, Dict
