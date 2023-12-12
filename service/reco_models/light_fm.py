@@ -1,11 +1,12 @@
 import os
 import pickle
+
 from service.api.recommenders import top_popular
 
 lightfm_ann = None
 MODEL_PATH = "service/reco_models/LF_model.pkl"
 if os.path.exists(MODEL_PATH):
-    lightfm_ann = pickle.load(open(MODEL_PATH, 'rb'))
+    lightfm_ann = pickle.load(open(MODEL_PATH, "rb"))
 
 popular_recos = top_popular(10)
 

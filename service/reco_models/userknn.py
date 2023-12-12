@@ -9,7 +9,7 @@ import scipy as sp
 from implicit.nearest_neighbours import ItemItemRecommender
 
 
-class UserKnn():
+class UserKnn:
     def __init__(self, model, N_users: int = 50):
         self.model = model
         self.N_users = N_users

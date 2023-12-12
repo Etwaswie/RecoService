@@ -1,18 +1,18 @@
+import os
 import random
 import typing
-import os
 from typing import List
 
 from fastapi import APIRouter, FastAPI, Request, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
-from service.reco_models.my_loader import my_load
-from service.reco_models.light_fm import get_recos_lightfm_ann
 from service.api.authorization import APIKeys
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.api.recommenders import top_popular, top_popular_without_viewed, weighted_random_recommendation
 from service.log import app_logger
+from service.reco_models.light_fm import get_recos_lightfm_ann
+from service.reco_models.my_loader import my_load
 
 KNN_MODEL_PATH = "service/reco_models/user_knn.pkl"
 if os.path.exists(KNN_MODEL_PATH):
@@ -55,7 +55,7 @@ async def health() -> str:
 @typing.no_type_check
 @router.get(path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse)
 async def get_reco(
-    request: Request, model_name: str, user_id: int # , token: str = Security(token_response)
+    request: Request, model_name: str, user_id: int  # , token: str = Security(token_response)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
     k_recs = request.app.state.k_recs

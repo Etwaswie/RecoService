@@ -8,6 +8,7 @@ class Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         if name == "UserKnn":
             from service.reco_models.userknn import UserKnn
+
             return UserKnn
 
         return super().find_class(module, name)
