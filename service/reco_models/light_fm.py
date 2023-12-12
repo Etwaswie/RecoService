@@ -14,7 +14,7 @@ popular_recos = top_popular(k=10)
 
 
 def get_recos_lightfm_ann(user_id, k_recs=10):
-    if user_id in lightfm_ann.user_id_map.external_ids:
-        return lightfm_ann.get_item_list_for_user(user_id, top_n=k_recs).tolist()
+    if user_id in lightfm_ann.user_id_map.external_ids:  # type: ignore
+        return lightfm_ann.get_item_list_for_user(user_id, top_n=k_recs).tolist()  # type: ignore
     else:
         return popular_recos[:10]

@@ -7,7 +7,7 @@ import pickle
 class Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         if name == "UserKnn":
-            from service.reco_models.userknn import UserKnn
+            from service.reco_models.userknn import UserKnn  # type: ignore
 
             return UserKnn
 
