@@ -1,4 +1,5 @@
 # type: ignore
+# pylint: disable-all
 
 import os
 import pickle
