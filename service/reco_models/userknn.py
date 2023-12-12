@@ -1,4 +1,5 @@
 # pylint: skip-file
+# type: ignore
 
 from collections import Counter
 from typing import Dict

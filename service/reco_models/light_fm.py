@@ -8,7 +8,7 @@ MODEL_PATH = "service/reco_models/LF_model.pkl"
 if os.path.exists(MODEL_PATH):
     lightfm_ann = pickle.load(open(MODEL_PATH, "rb"))
 
-popular_recos = top_popular(10)
+popular_recos = top_popular(k=10)
 
 
 def get_recos_lightfm_ann(user_id, k_recs=10):
