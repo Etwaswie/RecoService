@@ -1,10 +1,6 @@
 import os
-import random
 
-from pydantic import BaseModel
 import uvicorn
-from typing import Union, List
-from fastapi import FastAPI
 from service.api.app import create_app
 from service.settings import get_config
 

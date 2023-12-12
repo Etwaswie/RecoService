@@ -9,7 +9,7 @@ import scipy as sp
 from implicit.nearest_neighbours import ItemItemRecommender
 
 
-class UserKnn:
+class UserKnn():
     def __init__(self, model, N_users: int = 50):
         self.model = model
         self.N_users = N_users
@@ -46,12 +46,6 @@ class UserKnn:
 
         return self.interaction_matrix
 
-    # def is_cold_user(self, user_id):
-    #     threshold = 10
-    #     user_interactions_count = self.user_interactions.get(user_id, 0)
-    #
-    #     return user_interactions_count < threshold
-
     def idf(self, n: int, x: float):
         return np.log((1 + n) / (1 + x) + 1)
 
@@ -63,14 +57,13 @@ class UserKnn:
 
     def fit(self, train: pd.DataFrame):
         self.user_knn = self.model
-        # self.get_mappings(train)
+        self.get_mappings(train)
         self.weights_matrix = self.get_matrix(train, users_mapping=self.users_mapping, items_mapping=self.items_mapping)
 
         self.n = train.shape[0]
         self._count_item_idf(train)
 
         self.user_knn.fit(self.weights_matrix)
-        # self.popular_model.fit(Dataset.construct(train))
         self.is_fitted = True
 
     def _generate_recs_mapper(
@@ -83,13 +76,9 @@ class UserKnn:
 
         return _recs_mapper
 
-    # def popular_model(self, N_recs: int = 10):
-    #     top_popular = self.popular_model.popularity
-
     def top_popular(self, N_recs: int = 10):
         top_20 = pd.read_csv("data/top_20_items.csv")
         recos = top_20["item_id"].head(N_recs).to_list()
-        # top = [self.items_inv_mapping[reco] for reco in recos]
 
         return recos
 
@@ -103,16 +92,6 @@ class UserKnn:
             user_inv_mapping=self.users_inv_mapping,
             N=self.N_users,
         )
-
-        # test['is_cold'] = test['user_id'].apply(self.is_cold_user)
-        # # Рекомендации для холодных пользователей
-        # cold_recs = self.popular_model.recommend(
-        # test[test['is_cold']], N_recs)
-        # # Рекомендации для активных пользователей
-        # active_recs = self._generate_active_user_recs(test[~test['is_cold']],
-        #                                               N_recs)
-        # # Объединение рекомендаций
-        # recs = pd.concat([cold_recs, active_recs])
 
         # Рекомендации для всех юзеров
         all_users = test[test["user_id"].isin(self.users_mapping)]  # без этого условия predict падает с KeyError
@@ -129,11 +108,6 @@ class UserKnn:
         same_popular_recs["item_id"] = same_popular_recs.apply(lambda x: self.top_popular(), axis=1)
 
         recs = pd.concat([recs, same_popular_recs])
-        # recs['type'] = recs['sim'].apply(
-        # lambda x: 'Cold' if x < 0.2 else 'Hot')
-        #
-        # for rec in recs:
-        #     if rec['type'] == 'Cold':
 
         recs = (
             recs.explode("item_id")
@@ -152,4 +126,4 @@ class UserKnn:
         return self.predict(df, N_recs=N_recs).item_id.to_list()
 
 
-user_knn = UserKnn(ItemItemRecommender, 50)
+# user_knn = UserKnn(ItemItemRecommender, 50)
