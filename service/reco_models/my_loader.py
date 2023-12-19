@@ -1,16 +1,16 @@
 # type: ignore
+# pylint: disable-all
 
 import os
 import pickle
-
-import service.reco_models.userknn
 
 
 class Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         if name == "UserKnn":
-            user_KNN = service.reco_models.userknn.UserKnn
-            return user_KNN
+            from service.reco_models.userknn import UserKnn  # type: ignore
+
+            return UserKnn
 
         return super().find_class(module, name)
 

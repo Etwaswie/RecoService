@@ -69,5 +69,6 @@ venv.bak/
 # models
 .xz
 .pkl
+*.csv
 
 

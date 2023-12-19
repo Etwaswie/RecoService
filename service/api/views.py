@@ -1,3 +1,6 @@
+# type: ignore
+
+import os
 import random
 import typing
 from typing import List
@@ -10,19 +13,14 @@ from service.api.authorization import APIKeys
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.api.recommenders import top_popular, top_popular_without_viewed, weighted_random_recommendation
 from service.log import app_logger
-from service.reco_models.userknn import user_knn
+from service.reco_models.light_fm import get_recos_lightfm_ann
+from service.reco_models.my_loader import my_load
 
-# from service.reco_models.my_loader import my_load
-
-# MODEL_PATH = "service/reco_models/user_knn.pkl"
-
-# if os.path.exists(MODEL_PATH):
-#     user_knn = my_load(MODEL_PATH)
-# else:
-#     user_knn = None
-
-# with lzma.open("./service/reco_models/user_knn.xz", "rb") as file:
-#     user_knn = pickle.load(file)
+KNN_MODEL_PATH = "service/reco_models/user_knn.pkl"
+if os.path.exists(KNN_MODEL_PATH):
+    user_knn_model = my_load(KNN_MODEL_PATH)
+else:
+    user_knn_model = None
 
 
 class RecoResponse(BaseModel):
@@ -59,23 +57,25 @@ async def health() -> str:
 @typing.no_type_check
 @router.get(path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse)
 async def get_reco(
-    request: Request, model_name: str, user_id: int, token: str = Security(token_response)
+    request: Request, model_name: str, user_id: int  # , token: str = Security(token_response)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
-    k_recs = 10
+    k_recs = request.app.state.k_recs
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
     if model_name == "random":
         reco = random.sample(range(16518), k_recs)
     elif model_name == "userKNN":
-        reco = user_knn.predict(user_id)
+        reco = user_knn_model.recommend(user_id, N_recs=k_recs)
     elif model_name == "top_20_popular":
         reco = top_popular(k_recs)
     elif model_name == "top_weighted_duration_random":
         reco = weighted_random_recommendation(k_recs)
     elif model_name == "top_popular_without_viewed":
         reco = top_popular_without_viewed(user_id, k_recs)
+    elif model_name == "light_fm":
+        reco = get_recos_lightfm_ann(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
