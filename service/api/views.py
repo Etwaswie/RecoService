@@ -62,7 +62,7 @@ async def health() -> str:
 @typing.no_type_check
 @router.get(path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse)
 async def get_reco(
-    request: Request, model_name: str, user_id: int  # , token: str = Security(token_response)
+    request: Request, model_name: str, user_id: int, token: str = Security(token_response)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
     k_recs = request.app.state.k_recs
