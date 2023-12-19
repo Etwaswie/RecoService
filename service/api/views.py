@@ -70,9 +70,7 @@ async def get_reco(
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
-    if model_name == "random":
-        reco = random.sample(range(16518), k_recs)
-    elif model_name == "userKNN":
+    if model_name == "userKNN":
         reco = user_knn_model.recommend(user_id, N_recs=k_recs)
     elif model_name == "top_20_popular":
         reco = top_popular(k_recs)
