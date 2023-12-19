@@ -1,7 +1,6 @@
 # type: ignore
 
 import os
-import random
 import typing
 from typing import List
 
