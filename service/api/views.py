@@ -13,6 +13,7 @@ from service.api.authorization import APIKeys
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.api.recommenders import (
     dssm_offline_reco,
+    mv_offline_reco,
     top_popular,
     top_popular_without_viewed,
     weighted_random_recommendation,
@@ -83,6 +84,8 @@ async def get_reco(
         reco = get_recos_lightfm_ann(user_id)
     elif model_name == "dssm":
         reco = dssm_offline_reco(user_id)
+    elif model_name == "multi_vae":
+        reco = mv_offline_reco(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
