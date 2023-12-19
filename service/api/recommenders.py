@@ -41,7 +41,9 @@ dssm_reco_path = "data/reco_dssm1.csv"
 dssm_recos = pd.read_csv(dssm_reco_path, sep=";")
 
 users_dssm = dssm_recos["user_id"].unique()
-dssm_recos["item_id"] = dssm_recos["item_id"].apply(lambda x: x.split(", "))
+dssm_recos["item_id"] = dssm_recos["item_id"].apply(
+    lambda x: list(map(int, x.replace("'", "").replace("[", "").replace("]", "").split(", ")))
+)
 
 MV_reco_path = "data/reco_recbole.csv"
 MV_recos = pd.read_csv(MV_reco_path, sep=";")
