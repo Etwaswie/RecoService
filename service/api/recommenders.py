@@ -1,3 +1,5 @@
+# type: ignore
+
 import random
 
 import pandas as pd
@@ -54,11 +56,11 @@ def dssm_offline_reco(user_id):
     if user_id in users_dssm:
         user_recos = dssm_recos[dssm_recos["user_id"] == user_id]["item_id"].to_list()[0]
         return user_recos
-    return top_popular(k=10)
+    return top_popular(10)
 
 
 def mv_offline_reco(user_id):
     if user_id in users_MV:
         user_recos = MV_recos[MV_recos["user_id"] == user_id]["item_id"].to_list()[0]
         return user_recos
-    return top_popular(k=10)
+    return top_popular(10)
