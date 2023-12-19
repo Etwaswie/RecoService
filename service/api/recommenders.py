@@ -38,7 +38,7 @@ def top_popular_without_viewed(user_id, k):
 
 
 dssm_reco_path = "data/reco_dssm1.xlsx"
-dssm_recos = pd.read_excel(dssm_reco_path)
+dssm_recos = pd.read_excel(dssm_reco_path)  # type: ignore
 
 users_dssm = dssm_recos["user_id"].unique()
 dssm_recos["item_id"] = dssm_recos["item_id"].apply(lambda x: x.split(", "))
