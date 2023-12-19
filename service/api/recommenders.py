@@ -33,3 +33,17 @@ def top_popular_without_viewed(user_id, k):
 
     reco = top_items_list[:k]
     return reco
+
+
+dssm_reco_path = 'data/reco_dssm1.xlsx'
+dssm_recos = pd.read_excel(dssm_reco_path)
+
+users = dssm_recos['user_id'].unique()
+dssm_recos['item_id'] = dssm_recos['item_id'].apply(lambda x: x.split(", "))
+
+
+def dssm_offline_reco(user_id):
+    if user_id in users:
+        user_recos = dssm_recos[dssm_recos['user_id'] == user_id]['item_id'].to_list()[0]
+        return user_recos
+    return top_popular(10)

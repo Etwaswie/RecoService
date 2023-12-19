@@ -11,7 +11,12 @@ from pydantic import BaseModel
 
 from service.api.authorization import APIKeys
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
-from service.api.recommenders import top_popular, top_popular_without_viewed, weighted_random_recommendation
+from service.api.recommenders import (
+    dssm_offline_reco,
+    top_popular,
+    top_popular_without_viewed,
+    weighted_random_recommendation,
+)
 from service.log import app_logger
 from service.reco_models.light_fm import get_recos_lightfm_ann
 from service.reco_models.my_loader import my_load
@@ -76,6 +81,8 @@ async def get_reco(
         reco = top_popular_without_viewed(user_id, k_recs)
     elif model_name == "light_fm":
         reco = get_recos_lightfm_ann(user_id)
+    elif model_name == "dssm":
+        reco = dssm_offline_reco(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
