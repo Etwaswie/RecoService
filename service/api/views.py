@@ -13,9 +13,9 @@ from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserN
 from service.api.recommenders import (
     dssm_offline_reco,
     mv_offline_reco,
+    ranker_offline_reco,
     top_popular,
     weighted_random_recommendation,
-    ranker_offline_reco
 )
 from service.log import app_logger
 from service.reco_models.light_fm import get_recos_lightfm_ann
