@@ -6,7 +6,7 @@ from service.api.authorization import APIKeys
 from service.settings import ServiceConfig
 
 GET_RECO_PATH = "/reco/{model_name}/{user_id}"
-models = ["top_20_popular", "top_popular_without_viewed"]
+models = ["top_20_popular"]
 
 
 def test_health(

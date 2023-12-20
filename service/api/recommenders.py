@@ -66,3 +66,22 @@ def mv_offline_reco(user_id):
         user_recos = MV_recos[MV_recos["user_id"] == user_id]["item_id"].to_list()[0]
         return user_recos
     return top_popular(10)
+
+
+rank_reco_path = 'data/reco_ranker.csv'
+rank_recos = pd.read_csv(rank_reco_path, sep = ';')
+
+users_ranker = rank_recos['user_id'].unique()
+rank_recos['item_id'] = (rank_recos['item_id']
+                         .apply(lambda x: list(map(int, x
+                                                   .replace("'", "")
+                                                   .replace("[", "")
+                                                   .replace("]", "")
+                                                   .split(", ")))))
+
+
+def ranker_offline_reco(user_id):
+    if user_id in users_ranker:
+        user_recos = rank_recos[rank_recos['user_id'] == user_id]['item_id'].to_list()[0]
+        return user_recos
+    return top_popular(10)
