@@ -1,7 +1,6 @@
 # type: ignore
 
 import os
-import random
 import typing
 from typing import List
 
@@ -13,6 +12,7 @@ from service.api.authorization import APIKeys
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.api.recommenders import (
     dssm_offline_reco,
+    mv_offline_reco,
     top_popular,
     top_popular_without_viewed,
     weighted_random_recommendation,
@@ -62,16 +62,14 @@ async def health() -> str:
 @typing.no_type_check
 @router.get(path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse)
 async def get_reco(
-    request: Request, model_name: str, user_id: int  # , token: str = Security(token_response)
+    request: Request, model_name: str, user_id: int, token: str = Security(token_response)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
     k_recs = request.app.state.k_recs
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
-    if model_name == "random":
-        reco = random.sample(range(16518), k_recs)
-    elif model_name == "userKNN":
+    if model_name == "userKNN":
         reco = user_knn_model.recommend(user_id, N_recs=k_recs)
     elif model_name == "top_20_popular":
         reco = top_popular(k_recs)
@@ -83,6 +81,8 @@ async def get_reco(
         reco = get_recos_lightfm_ann(user_id)
     elif model_name == "dssm":
         reco = dssm_offline_reco(user_id)
+    elif model_name == "multi_vae":
+        reco = mv_offline_reco(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 

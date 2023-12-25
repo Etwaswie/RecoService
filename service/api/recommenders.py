@@ -1,3 +1,5 @@
+# type: ignore
+
 import random
 
 import pandas as pd
@@ -35,15 +37,32 @@ def top_popular_without_viewed(user_id, k):
     return reco
 
 
-dssm_reco_path = 'data/reco_dssm1.xlsx'
-dssm_recos = pd.read_excel(dssm_reco_path)
+dssm_reco_path = "data/reco_dssm1.csv"
+dssm_recos = pd.read_csv(dssm_reco_path, sep=";")
 
-users = dssm_recos['user_id'].unique()
-dssm_recos['item_id'] = dssm_recos['item_id'].apply(lambda x: x.split(", "))
+users_dssm = dssm_recos["user_id"].unique()
+dssm_recos["item_id"] = dssm_recos["item_id"].apply(
+    lambda x: list(map(int, x.replace("'", "").replace("[", "").replace("]", "").split(", ")))
+)
+
+MV_reco_path = "data/reco_recbole.csv"
+MV_recos = pd.read_csv(MV_reco_path, sep=";")
+
+users_MV = MV_recos["user_id"].unique()
+MV_recos["item_id"] = MV_recos["item_id"].apply(
+    lambda x: list(map(int, x.replace("'", "").replace("[", "").replace("]", "").split(", ")))
+)
 
 
 def dssm_offline_reco(user_id):
-    if user_id in users:
-        user_recos = dssm_recos[dssm_recos['user_id'] == user_id]['item_id'].to_list()[0]
+    if user_id in users_dssm:
+        user_recos = dssm_recos[dssm_recos["user_id"] == user_id]["item_id"].to_list()[0]
+        return user_recos
+    return top_popular(10)
+
+
+def mv_offline_reco(user_id):
+    if user_id in users_MV:
+        user_recos = MV_recos[MV_recos["user_id"] == user_id]["item_id"].to_list()[0]
         return user_recos
     return top_popular(10)
