@@ -13,8 +13,8 @@ from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserN
 from service.api.recommenders import (
     dssm_offline_reco,
     mv_offline_reco,
+    ranker_offline_reco,
     top_popular,
-    top_popular_without_viewed,
     weighted_random_recommendation,
 )
 from service.log import app_logger
@@ -75,14 +75,14 @@ async def get_reco(
         reco = top_popular(k_recs)
     elif model_name == "top_weighted_duration_random":
         reco = weighted_random_recommendation(k_recs)
-    elif model_name == "top_popular_without_viewed":
-        reco = top_popular_without_viewed(user_id, k_recs)
     elif model_name == "light_fm":
         reco = get_recos_lightfm_ann(user_id)
     elif model_name == "dssm":
         reco = dssm_offline_reco(user_id)
     elif model_name == "multi_vae":
         reco = mv_offline_reco(user_id)
+    elif model_name == "ranker":
+        reco = ranker_offline_reco(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
