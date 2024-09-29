@@ -54,4 +54,5 @@ content_type - Тип контента (фильм, сериал)
 
 ## Метрики
 Метрика качества в соревновании - map@10 (Mean Average Precision at 10). На скриншоте представлены результаты работы для различных моделей.
+
 ![image](https://github.com/user-attachments/assets/b62db919-d666-4496-b15b-ea62ba200fdc)
