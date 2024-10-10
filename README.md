@@ -1,58 +1,61 @@
-# Сервис рекомендаций
+# Recommendation System for KION Cinema Database
 
-В процессе выполнения данного проекта разработан микросервис для получения рекомендаций в онлайн-режиме.
-Он включает в себя несколько моделей. От базовых - популярное и random до более усложненных - kNN (item kNN, user kNN), LightFM, DSSM (для более репрезентативного сэмплирования используется длительность просмотра), MultiVAE. На последнем этапе была обучена двухэтапная модель LightFM, а на втором уровне LightGBM + Popular.
+This project involved developing a microservice for generating real-time recommendations. The system integrates multiple recommendation models, ranging from basic approaches such as popularity and random selections to more advanced algorithms, including kNN (both item-based and user-based), LightFM, DSSM, and MultiVAE.
 
-Реализован тюнинг гиперпараметров, например, векторного расстояния, с использованием optuna.
-Для работы с холодными пользователями используются их фичи (соц.дем, для кого нет фичей - Popular).
-Использованы библитеки RecTools, implicit, RecBole
+## Model Architecture
+The recommendation process utilizes a two-tier model structure. At the first level, the LightFM model is trained, which combines collaborative filtering and content-based approaches. The second tier employs LightGBM combined with a popularity-based model to enhance recommendations further.
 
-## Данные
-Для реализации проекта использованы данные из приложения МТС Kion по взаимодействиям пользователей с контентом за период 6 месяцев.
-В представленном датасете собраны данные по пользователям и объектам (сериалы/фильмы), а также по их взаимодействиям (просмотр контента пользователем) из онлайн-кинотеатра Kion. Данные по просмотру контента собраны за ~6 месяцев, с 2021-03-13 по 2021-08-22  включительно, и разбавлены случайным шумом. ID пользователей и контента анонимизированы.
+Hyperparameter tuning is conducted using Optuna to optimize parameters like vector distance, ensuring that the model performs effectively. For cold-start users, demographic features are utilized, while users without available features receive popular recommendations.
 
-Статистика по датасету:
+## Libraries Used
+The project employs several libraries, including:
 
-- 840к пользователей
-- 16к объектов
-- 5.5кк взаимодействий
+- RecTools: For collaborative filtering.
+- implicit: To handle implicit feedback data.
+- RecBole: For a comprehensive recommendation framework.
 
-1. users.csv
-В данном файле содержится информация о пользователях:
+## Data
+The recommendation system is built using data from the MTS KION app, capturing user interactions with content over a six-month period. The dataset includes anonymous identifiers for users and content, ensuring privacy while providing rich information for the model.
 
-user_id - ID пользователя
-age - возрастная группа пользователя, строка вида "M_N"
-sex - пол пользователя
-income - доход пользователя, строка вида "M_N"
-kids_flg - флаг "наличие ребенка"
+### Dataset Statistics:
+840,000 users,
+16,000 items (movies/series),
+5.5 million interactions.
 
-2. items.csv
-В данном файле содержится информация об объектах (фильмы/сериалы):
+### Dataset Files:
+users.csv: Contains user information:
 
-item_id - ID контента
-content_type - Тип контента (фильм, сериал)
-title - Название на русском
-title_orig - Название оригинальное
-genres - Жанры из источника (онлайн-кинотеатры)
-countries - страны
-for_kids - флаг "контент для детей"
-age_rating - возрастной рейтинг
-studios - студии
-directors - директора
-actors - актеры
-keywords - ключевые слова
-description - описание
+- user_id: Unique identifier for the user.
+- age: Age group of the user (e.g., "M_N").
+- sex: Gender of the user.
+- income: Income bracket (e.g., "M_N").
+- kids_flg: Indicator of whether the user has children.
+  
+items.csv: Contains details about the content:
 
-3. interactions.csv
-В данном файле содержится информация о взаимодействиях пользователей с контентом:
+- item_id: Unique identifier for the content.
+- content_type: Type of content (movie, series).
+- title: Title in Russian.
+- title_orig: Original title.
+- genres: Genres associated with the content.
+- countries: Countries of origin.
+- for_kids: Indicator if the content is suitable for children.
+- age_rating: Age rating.
+- studios: Production studios.
+- directors: Directors of the content.
+- actors: Main actors.
+- keywords: Key terms associated with the content.
+- description: Brief overview of the content.
 
-user_id - ID пользователя
-item_id - ID контента
-last_watch_dt - Дата последнего просмотра
-total_dur - Общая продолжительность всех просмотров данного контента в секундах
-content_type - Тип контента (фильм, сериал)
+interactions.csv: Contains user interaction data:
 
-## Метрики
-Метрика качества в соревновании - map@10 (Mean Average Precision at 10). На скриншоте представлены результаты работы для различных моделей.
+- user_id: Unique identifier for the user.
+- item_id: Unique identifier for the content.
+- last_watch_dt: Date of the last viewing.
+- total_dur: Total viewing time for the content in seconds.
+- content_type: Type of content (movie, series).
+
+## Metrics
+The performance of the recommendation system is evaluated using the map@10 (Mean Average Precision at 10) metric. The results from various models are presented in the project documentation, showcasing the effectiveness of different approaches in delivering relevant recommendations.
 
 ![image](https://github.com/user-attachments/assets/b62db919-d666-4496-b15b-ea62ba200fdc)
